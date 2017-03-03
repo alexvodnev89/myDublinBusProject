@@ -9,7 +9,7 @@ public class StopObject {
 	monitored;
 	LocalDateTime queryTime;
 	
-	public StopObject(String id,String a,String b,String c,String d,String e,String f,String g,String h,String i,
+	protected StopObject(String id,String a,String b,String c,String d,String e,String f,String g,String h,String i,
 			String j,String k,String l,String m,String n,String o,String p,LocalDateTime q){
 		uniqueNumber = id; arrivaldatetime = a; duetime = b; departuredatetime = c; departureduetime = d; scheduledarrivaldatetime = e;
 		scheduleddeparturedatetime = f; destination = g; destinationlocalized = h; origin = i; originlocalized =j; operator = k;
@@ -20,6 +20,10 @@ public class StopObject {
 	  	if(!(ob instanceof StopObject)) return false;
 	  	StopObject temp = (StopObject)ob;
 	  	return uniqueNumber.equals(temp.uniqueNumber);
+	}
+	
+	public String toString(){
+		return "";
 	}
 	
 	
