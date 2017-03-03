@@ -23,7 +23,23 @@ public class StopObject {
 	}
 	
 	public String toString(){
-		return "test git";
+		return  "Unique number : " + uniqueNumber + "\n" +
+				"Arrivaldate time : "+ arrivaldatetime + "\n" + "Due time : " + duetime + "\n" +
+				"Departure date time : " + 	departuredatetime + "\n" + 
+				"Departure due time : " + departureduetime + "\n" + 
+				"Scheduled arrival date time : " + scheduledarrivaldatetime + "\n" + 
+				"Scheduled departure date time : " + scheduleddeparturedatetime + "\n" + 
+				"Destination : " + destination + "\n" + 
+				"Destination localized : " + destinationlocalized + "\n" + 
+				"Origin : " + origin + "\n" + 
+				"Origin localized : " + originlocalized + "\n" + 
+				"Operator : " + operator + "\n" + 
+				"Additional information : " + additionalinformation + "\n" + 
+				"Low floor status : " + lowfloorstatus + "\n" + 
+				"Route : " + route + "\n" + 
+				"Source time stamp : " + sourcetimestamp + "\n" + 
+				"Monitored : " + monitored + "\n" + 
+				"Time when object was saved " + queryTime.toString();		
 	}
 	
 	

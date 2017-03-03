@@ -49,10 +49,16 @@ public class StopObjectGetter {
 					LocalDateTime currentTime = LocalDateTime.now();			
 					String uniqueNumber = stopID + " " + scheduledarrivaldatetime;
 					
+					
 					StopObject stop = new StopObject(uniqueNumber,arrivaldatetime,duetime,departuredatetime,departureduetime,
 							scheduledarrivaldatetime,scheduleddeparturedatetime,destination,destinationlocalized,origin,
 							originlocalized,operator,additionalinformation,lowfloorstatus,route,sourcetimestamp,
 							monitored,currentTime);
+					
+					System.out.println(stop.toString());
+					System.out.println();
+					
+					
 					
 				}
 			}
