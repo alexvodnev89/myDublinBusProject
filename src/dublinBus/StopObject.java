@@ -23,7 +23,7 @@ public class StopObject {
 	}
 	
 	public String toString(){
-		return "";
+		return "test git";
 	}
 	
 	
