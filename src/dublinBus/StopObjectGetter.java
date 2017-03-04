@@ -7,9 +7,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,6 +15,7 @@ import org.json.JSONObject;
 public class StopObjectGetter {
 	 void getDublinBusObjects(String s) throws IOException, JSONException{
 		JSONObject json = readJsonFromUrl(s);
+		System.out.println("xd");
 		if(json != null){
 			JSONArray resultsArray = json.getJSONArray("results");
 			String stopID = json.getString("stopid");
@@ -45,15 +43,14 @@ public class StopObjectGetter {
 					String route = jo.getString("route") != null ? jo.getString("route") : "";
 					String sourcetimestamp = jo.getString("sourcetimestamp") != null ? jo.getString("sourcetimestamp") : "";
 					String monitored = jo.getString("monitored") != null ? jo.getString("monitored") : "";	
-					
-					LocalDateTime currentTime = LocalDateTime.now();			
+							
 					String uniqueNumber = stopID + " " + scheduledarrivaldatetime;
 					
 					
 					StopObject stop = new StopObject(uniqueNumber,arrivaldatetime,duetime,departuredatetime,departureduetime,
 							scheduledarrivaldatetime,scheduleddeparturedatetime,destination,destinationlocalized,origin,
 							originlocalized,operator,additionalinformation,lowfloorstatus,route,sourcetimestamp,
-							monitored,currentTime);
+							monitored);
 					
 					System.out.println(stop.toString());
 					System.out.println();
