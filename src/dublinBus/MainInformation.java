@@ -1,7 +1,6 @@
 package dublinBus;
 
 import java.io.IOException;
-import java.text.Format.Field;
 
 import org.json.JSONException;
 
@@ -17,7 +16,10 @@ public class MainInformation {
 		}
 		
 		StopObjectGetter sog = new StopObjectGetter();
-		sog.getDublinBusObjects("https://data.dublinked.ie/cgi-bin/rtpi/realtimebusinformation?stopid=1712&format=json");
+		sog.getDublinBusObjects(1712);
+
+		
+
 	}
 	
 

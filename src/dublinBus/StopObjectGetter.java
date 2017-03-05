@@ -7,15 +7,18 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class StopObjectGetter {
-	 void getDublinBusObjects(String s) throws IOException, JSONException{
-		JSONObject json = readJsonFromUrl(s);
-		System.out.println("xd");
+	 void getDublinBusObjects(int busStopNumber) throws IOException, JSONException{
+		String stringUrl = "https://data.dublinked.ie/cgi-bin/rtpi/realtimebusinformation?stopid=" + busStopNumber + "&format=json";
+		JSONObject json = readJsonFromUrl(stringUrl);
 		if(json != null){
 			JSONArray resultsArray = json.getJSONArray("results");
 			String stopID = json.getString("stopid");
@@ -43,26 +46,57 @@ public class StopObjectGetter {
 					String route = jo.getString("route") != null ? jo.getString("route") : "";
 					String sourcetimestamp = jo.getString("sourcetimestamp") != null ? jo.getString("sourcetimestamp") : "";
 					String monitored = jo.getString("monitored") != null ? jo.getString("monitored") : "";	
+					
+					long arrivalTime = 0;
+					long scheduledarrivaltime = 0;
+					long diff = 0;
+					java.util.Date arrivalDate;
+					java.util.Date scheduledArrivalDate;
+					java.util.Date fullProperArrivalDate = new Date();
+					
+					String time = scheduledarrivaldatetime.substring(11,16);
+					String day = scheduledarrivaldatetime.substring(0,2);
+					String month = scheduledarrivaldatetime.substring(3,5);
+					String year = scheduledarrivaldatetime.substring(6,10);
+					
+					String fullDate = year + "-" + month + "-" + day + " " + time;
+					
+					if(!arrivaldatetime.equals("") && !scheduledarrivaldatetime.equals("")){
+						String s1 = arrivaldatetime.substring(11,16);
+						String s2 = scheduledarrivaldatetime.substring(11,16);
+						SimpleDateFormat simpleFormat = new SimpleDateFormat("HH:mm");
+						SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+						try{	
+							arrivalDate = simpleFormat.parse(s1);
+							scheduledArrivalDate = simpleFormat.parse(s2);
 							
-					String uniqueNumber = stopID + " " + scheduledarrivaldatetime;
-					
-					
-					StopObject stop = new StopObject(uniqueNumber,arrivaldatetime,duetime,departuredatetime,departureduetime,
-							scheduledarrivaldatetime,scheduleddeparturedatetime,destination,destinationlocalized,origin,
-							originlocalized,operator,additionalinformation,lowfloorstatus,route,sourcetimestamp,
-							monitored);
-					
-					System.out.println(stop.toString());
-					System.out.println();
-					
-					
+							arrivalTime = arrivalDate.getTime();
+							scheduledarrivaltime = scheduledArrivalDate.getTime();
+							
+							diff = (scheduledarrivaltime - arrivalTime)/1000/60;
+							fullProperArrivalDate = format.parse(fullDate);
+							
+							StopObject stop = new StopObject(fullProperArrivalDate,arrivaldatetime,duetime,departuredatetime,departureduetime,
+									scheduledarrivaldatetime,scheduleddeparturedatetime,destination,destinationlocalized,origin,
+									originlocalized,operator,additionalinformation,lowfloorstatus,route,sourcetimestamp,
+									monitored,diff);
+							
+							System.out.println(stop.toString());
+							System.out.println("");
+							
+							
+						}catch (ParseException e) {
+							e.printStackTrace();
+						}
+					}			
+
 					
 				}
 			}
 		}
 	}
 	
-	String readAll(Reader rd) throws IOException {
+	String read(Reader rd) throws IOException {
 	    StringBuilder sb = new StringBuilder();
 	    int cp;
 	    while ((cp = rd.read()) != -1) {
@@ -74,7 +108,7 @@ public class StopObjectGetter {
 	    InputStream is = new URL(url).openStream();
 	    try {
 	      BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
-	      String jsonText = readAll(rd);
+	      String jsonText = read(rd);
 	      JSONObject json = new JSONObject(jsonText);
 	      return json;
 	    } finally {
